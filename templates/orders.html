@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Orders</title>
+  </head>
+  <body>
+    {% extends "index.html" %}
+    {% block content %}
+
+    <h1> Orders </h1>
+    <p> Details of Orders placed.</p>
+    <p> </p>
+ <div>
+     {{table_data | safe}}
+ </div>
+    {% endblock %}
+  </body>
+</html>
