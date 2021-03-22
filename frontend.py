@@ -10,17 +10,20 @@ from flask_bootstrap import Bootstrap
 import json
 from json2html import json2html
 import html
+import sys
 
-from db_setup import init_db, db_session
-from form import OrderForm
-from models import Orders
+import app_config
+import db_setup
+from forms.orders.add import OrderForm
+from models import Order
 #from models import db
 #from . import config
 
 app = Flask(__name__, template_folder='templates')
 bootstrap = Bootstrap(app)
+app.config['SECRET_KEY'] = app_config.SECRET_KEY
 
-init_db()
+db = db_setup.init_db(app)
 #db.init(app)
 #db.create_all()
 
@@ -29,29 +32,44 @@ init_db()
 with open('./data/products.json', 'r') as profile:
     pro_data = profile.read()
 
-@app.route("/")
-def home():
+@app.route("/", methods=['GET', 'POST'])
+def index():
     """Home page for web app"""
     return render_template("home.html")
 
 @app.route("/products", methods=['GET'])
 def products():
     """Products page for web app"""
-    pro_table = (json2html.convert(json = pro_data))
-    return render_template("products.html", table_data=pro_table)
+    #pro_table = (json2html.convert(json = pro_data))
+    products=json.loads(pro_data)['products']
+    sys.stderr.write("Hey products:\n")
+    sys.stderr.write(repr(products))
+    return render_template("products.html", products=products)
 #    return render_template(
 #            "products.html", title="page", jsonfile=json.dumps(data))
 
-@app.route("/orders", methods=['GET', 'POST'])
-def orders():
-    """ Add a new Order"""
+@app.route("/order_form", methods=['GET', 'POST'])
+def order_form():
+    if request.method == "GET":
+        form = OrderForm() # ??? request.form)
+        form.quantity.data = 1
+        return render_template("order_form.html", form=form)
     form = OrderForm(request.form)
-    if request.method == 'POST' and form.validate():
-        order = Orders()
+    if form.validate_on_submit():
+        sys.stderr.write("Hey we're valid!!\n")
+        order = Order()
         save_orders(order, form, new=True)
         flash('Order placed successfully')
         return redirect("/")
-    return render_template("orders.html", form=form)
+    else:
+        sys.stderr.write("Hey we're not valid!!\n")
+        flash('Order not valid')
+        return render_template("order_form.html", form=form)
+
+@app.route("/orders", methods=['GET'])
+def orders():
+    current_orders = Order.query.all()
+    return render_template("orders.html", orders=current_orders)
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -65,15 +83,15 @@ def save_orders(order, form, new=True):
     """Save orders to database"""
 # how to write data to a db
 
-    item = Orders()
+    item = Order()
     item.name = form.item.data
 
     order.item = form.item.data
     order.quantity = form.quantity.data
     order.buyer_id = form.buyer_id.data
     order.city = form.city.data
-    db_session.add(order)
-    db_session.commit()
+    db.session.add(order)
+    db.session.commit()
 
 
 
