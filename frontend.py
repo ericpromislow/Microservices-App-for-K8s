@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# See LICENSE.md for copyright and license details. 
+# See LICENSE.md for copyright and license details.
 
 from flask import Flask, render_template
 from flask import request, url_for, flash, redirect
@@ -46,11 +46,11 @@ def products():
 def orders():
     """ Add a new Order"""
     form = OrderForm(request.form)
-#    if request.method == 'POST' and form.validate():
-    order = Orders()
-    save_orders(order, form, new=True)
-    flash('Order placed successfully')
-    return redirect("/")
+    if request.method == 'POST' and form.validate():
+        order = Orders()
+        save_orders(order, form, new=True)
+        flash('Order placed successfully')
+        return redirect("/")
     return render_template("orders.html", form=form)
 
 def save_orders(order, form, new=True):
