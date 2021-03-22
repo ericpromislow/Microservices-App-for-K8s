@@ -3,11 +3,20 @@ from flask import request, url_for, flash, redirect
 import json
 import html
 from json2html import *
+from db_setup import init_db, db_session
 
-from orderform import OrderForm
 
+from form import OrderForm
+from models import Orders
+#from models import db
+#from . import config
 
 app = Flask(__name__,template_folder='templates')
+
+init_db()
+#db.init(app)
+#db.create_all()
+
 
 # read file
 with open('./data/products.json', 'r') as profile:
@@ -26,7 +35,7 @@ def products():
 #    return render_template(
 #            "products.html", title="page", jsonfile=json.dumps(data))
 
-@app.route("/orders")
+@app.route("/orders", methods=['POST'])
 def orders():
     """ Add a new Order"""
     form = OrderForm(request.form)
@@ -37,10 +46,21 @@ def orders():
         return redirect("/")
     return render_template("orders.html", form=form)
 
-def save_orders(new_order, form, new=False):
+def save_orders(order, form, new=True):
     """Save orders to database"""
 # how to write data to a db
 
+    item = Orders()
+    item.name = form.item.data
+
+    order.item = item
+    order.quantity = form.quantity.data
+    order.buyer_id = form.buyer_id.data
+    order.city = form.city.data
+    db_session.add(order)
+    db_session.commit()
+
+
 
 if __name__=="__main__":
-    app.run(debug=True)
+        app.run(debug=True)
