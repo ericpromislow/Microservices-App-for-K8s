@@ -1,0 +1,12 @@
+1. Explore code base
+2. Readup on sqlalchemy 
+  - http://aosabook.org/en/sqlalchemy.html
+  - https://www.sqlalchemy.org/library.html#architecture
+
+sqlalchemy.create_engine - creates a facade around DBAPI 
+
+engine = create_engine("postgresql://user:password@host:port/dbname")
+conn = engine.connect()
+result = conn.execute()...
+conn.close()
+
