@@ -6,7 +6,7 @@
 
 4. Add users - modifying must login
 
-5. Bring in flask-bootstrap
+[x] 5. Bring in flask-bootstrap
 
 
 1. Make the database configurable:

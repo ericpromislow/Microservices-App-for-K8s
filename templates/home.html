@@ -1,16 +1,8 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Flask Tutorial</title>
-  </head>
-  <body>
-    {% extends "index.html" %}
-    {% block content %}
+{% extends "base.html" %}
 
-    <h1> Welcome to the Online Store </h1>
+{% block content %}
+    <div class="page-header">
+      <h1>Welcome to Material Socksess</h1>
+    </div>
     <p> We are now taking Orders </p>
-
-    {% endblock %}
-  </body>
-</html>
+{% endblock %}

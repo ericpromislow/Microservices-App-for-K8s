@@ -1,8 +1,15 @@
+#!/usr/bin/env python3
+
+# See LICENSE.md for copyright and license details. 
+
 from flask import Flask, render_template
 from flask import request, url_for, flash, redirect
+
+from flask_bootstrap import Bootstrap
+
 import json
+from json2html import json2html
 import html
-from json2html import *
 
 from db_setup import init_db, db_session
 from form import OrderForm
@@ -11,6 +18,7 @@ from models import Orders
 #from . import config
 
 app = Flask(__name__, template_folder='templates')
+bootstrap = Bootstrap(app)
 
 init_db()
 #db.init(app)
