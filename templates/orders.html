@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Order</title>
-  </head>
-  <body>
-    {% extends "index.html" %}
-    {% block content %}
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
 
     <h1> Orders </h1>
 {% from "_formhelpers.html" import render_field %}
@@ -19,7 +14,6 @@
     </dl>
     <p><input type="submit" value="Submit">
 </p></form>
+</div>
 
-    {% endblock %}
-  </body>
-</html>
+{% endblock %}

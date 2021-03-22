@@ -1,0 +1,17 @@
+1. Declare other tables
+
+2. Create the sqlite database
+
+3. Implement methods
+
+4. Add users - modifying must login
+
+[x] 5. Bring in flask-bootstrap
+
+
+1. Make the database configurable:
+
+Dev: sqlite
+Testing: sqlite
+Prod: postgres (or mysql)
+

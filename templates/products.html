@@ -1,19 +1,16 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Products</title>
-  </head>
-  <body>
-    {% extends "index.html" %}
-    {% block content %}
+{% extends "base.html" %}
 
+{% block title %}
+Material Socksess: The Online Footwear Store - Products List
+{% endblock %}
+
+{% block content %}
+<div class="container">
     <h1> Products </h1>
     <p> We have several products to choose from.</p>
     <p> All prices are exclusive of delivery costs.</p>
- <div>
-     {{table_data | safe}}
- </div>
-    {% endblock %}
-  </body>
-</html>
+    <div>
+       {{table_data | safe}}
+    </div>
+</div>
+{% endblock %}

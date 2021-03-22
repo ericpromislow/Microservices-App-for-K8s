@@ -1,0 +1,2 @@
+1. Consider using scaled integers instead of floats for prices
+
