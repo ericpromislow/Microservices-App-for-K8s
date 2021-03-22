@@ -35,7 +35,7 @@ def products():
 #    return render_template(
 #            "products.html", title="page", jsonfile=json.dumps(data))
 
-@app.route("/orders", methods=['POST'])
+@app.route("/orders")
 def orders():
     """ Add a new Order"""
     form = OrderForm(request.form)
