@@ -53,6 +53,14 @@ def orders():
         return redirect("/")
     return render_template("orders.html", form=form)
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html'), 500
+
 def save_orders(order, form, new=True):
     """Save orders to database"""
 # how to write data to a db

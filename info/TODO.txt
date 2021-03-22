@@ -1,4 +1,4 @@
-1. Declare other tables
+[] 1. Declare other tables
 
 2. Create the sqlite database
 
