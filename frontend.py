@@ -3,9 +3,8 @@ from flask import request, url_for, flash, redirect
 import json
 import html
 from json2html import *
+
 from db_setup import init_db, db_session
-
-
 from form import OrderForm
 from models import Orders
 #from models import db
@@ -35,15 +34,15 @@ def products():
 #    return render_template(
 #            "products.html", title="page", jsonfile=json.dumps(data))
 
-@app.route("/orders")
+@app.route("/orders", methods=['GET', 'POST'])
 def orders():
     """ Add a new Order"""
     form = OrderForm(request.form)
-    if request.method == 'POST' and form.validate():
-        order = Orders()
-        save_orders(order, form, new=True)
-        flash('Order placed successfully')
-        return redirect("/")
+#    if request.method == 'POST' and form.validate():
+    order = Orders()
+    save_orders(order, form, new=True)
+    flash('Order placed successfully')
+    return redirect("/")
     return render_template("orders.html", form=form)
 
 def save_orders(order, form, new=True):
@@ -53,7 +52,7 @@ def save_orders(order, form, new=True):
     item = Orders()
     item.name = form.item.data
 
-    order.item = item
+    order.item = form.item.data
     order.quantity = form.quantity.data
     order.buyer_id = form.buyer_id.data
     order.city = form.city.data
