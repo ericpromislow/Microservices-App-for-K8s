@@ -10,7 +10,7 @@ from models import Orders
 #from models import db
 #from . import config
 
-app = Flask(__name__,template_folder='templates')
+app = Flask(__name__, template_folder='templates')
 
 init_db()
 #db.init(app)
