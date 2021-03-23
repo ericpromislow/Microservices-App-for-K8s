@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}
+Material Socksess: The Online Footwear Store - Our Customers
+{% endblock %}
+
+{% block page_content %}
+<div class="container">
+    <h1> Customer List </h1>
+    <div>
+      <table>
+        <thead>
+          <td>Customer ID</td>
+          <td>Name</td>
+          <td>Street Address</td>
+          <td>City</td>
+          <td>State</td>
+          <td>Zip</td>
+          <td>Country</td>
+        </thead>
+        {% for c in customers %}
+          <tr>
+            <td>{{c['id']}}
+            </td>
+            <td>{{c['first_name']}} {{c['last_name']}}
+            </td>
+            <td>{{c['address']}}
+            </td>
+            <td>{{c['city']}}
+            </td>
+            <td>{{c['state']}}
+            </td>
+            <td>{{c['zip']}}
+            </td>
+            <td>{{c['country']}}
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+</div>
+{% endblock %}
+
+

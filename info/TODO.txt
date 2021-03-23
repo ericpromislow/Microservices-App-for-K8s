@@ -1,4 +1,5 @@
 [] 1. Declare other tables - not yet
+- Include rename 'user' to 'customer', reflecting their role
 
 [x] 2. Create the sqlite database - done by hand:
 

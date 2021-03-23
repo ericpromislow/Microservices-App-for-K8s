@@ -21,5 +21,4 @@ def init_db(app):
     app.config['SQLALCHEMY_DATABASE_URI'] = app_config.DB_URL
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db = SQLAlchemy(app)
-    db.create_all()
     return db
