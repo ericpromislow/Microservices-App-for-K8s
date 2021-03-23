@@ -56,13 +56,10 @@ def order_form():
         return render_template("order_form.html", form=form)
     form = OrderForm(request.form)
     if form.validate_on_submit():
-        sys.stderr.write("Hey we're valid!!\n")
-        order = Order()
-        save_orders(order, form, new=True)
+        save_orders(form)
         flash('Order placed successfully')
         return redirect("/")
     else:
-        sys.stderr.write("Hey we're not valid!!\n")
         flash('Order not valid')
         return render_template("order_form.html", form=form)
 
@@ -79,12 +76,9 @@ def page_not_found(e):
 def internal_server_error(e):
     return render_template('500.html'), 500
 
-def save_orders(order, form, new=True):
+def save_orders(form):
     """Save orders to database"""
-# how to write data to a db
-
-    item = Order()
-    item.name = form.item.data
+    order = Order()
 
     order.item = form.item.data
     order.quantity = form.quantity.data
