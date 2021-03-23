@@ -23,6 +23,8 @@ Prod: postgres (or mysql)
 
 btw the model here is that only internal operators are accessing this
 
+[ ] 8. Build pages for users and products, and also redo orders so it uses user_id and product_id
+
 At this point we have a monolith working. Now we can work towards microservicing it:
 
 [ ] Replace sqlite with Mysql or postgres
