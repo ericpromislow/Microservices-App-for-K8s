@@ -4,13 +4,38 @@
 Material Socksess: The Online Footwear Store - Products List
 {% endblock %}
 
-{% block content %}
+{% block page_content %}
 <div class="container">
     <h1> Products </h1>
     <p> We have several products to choose from.</p>
     <p> All prices are exclusive of delivery costs.</p>
     <div>
-       {{table_data | safe}}
+      <table>
+        <thead>
+          <td>Product ID</td>
+          <td>Name</td>
+          <td>Description</td>
+          <td>Cost</td>
+          <td>Picture</td>
+        </thead>
+        {% for product in products %}
+          <tr>
+            <td>{{product['id']}}
+            </td>
+            <td>{{product['name']}}
+            </td>
+            <td>{{product['description']}}
+            </td>
+            <td>{{product['cost']}}
+            </td>
+            {% if product['picture'] %}
+            <td>
+              <img height="64" width="64" src="{{product['picture']}}">
+            </td>
+            {% endif %}
+          </tr>
+        {% endfor %}
+      </table>
     </div>
 </div>
 {% endblock %}

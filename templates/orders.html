@@ -1,19 +1,30 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block page_content %}
 <div class="container">
 
-    <h1> Orders </h1>
-{% from "_formhelpers.html" import render_field %}
-<form method="post">
-    <dl>
-        {{ render_field(form.item) }}
-        {{ render_field(form.quantity) }}
-        {{ render_field(form.buyer_id) }}
-        {{ render_field(form.city) }}
-    </dl>
-    <p><input type="submit" value="Submit">
-</p></form>
+  <h1> Current Orders </h1>
+    <div>
+      <table>
+        <thead>
+          <td>Name</td>
+          <td>Quantity</td>
+          <td>User</td>
+          <td>City</td>
+        </thead>
+         {% for order in orders %}
+          <tr>
+            <td>{{ order.item }}
+            </td>
+            <td>{{ order.quantity }}
+            </td>
+            <td>{{ order.buyer_id }}
+            </td>
+            <td>{{ order.city }}
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
 </div>
 
 {% endblock %}

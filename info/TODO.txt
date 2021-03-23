@@ -1,17 +1,32 @@
-1. Declare other tables
+[] 1. Declare other tables - not yet
 
-2. Create the sqlite database
+[x] 2. Create the sqlite database - done by hand:
 
-3. Implement methods
+create table orders(id integer primary key, item string, quantity integer, buyer_id string, city string)
 
-4. Add users - modifying must login
+# I couldn't get the automatic table creation to wok
+
+[x] 3. Implement methods - show products, edit new-order form, submit order, view orders
+
+[ ] 4. Add users - modifying must login
 
 [x] 5. Bring in flask-bootstrap
 
 
-1. Make the database configurable:
+[ ] 6. Make the database configurable:
 
 Dev: sqlite
 Testing: sqlite
 Prod: postgres (or mysql)
 
+[ ] 7. - Add a table for users - select the user in the new order form
+
+btw the model here is that only internal operators are accessing this
+
+At this point we have a monolith working. Now we can work towards microservicing it:
+
+[ ] Replace sqlite with Mysql or postgres
+
+[ ] Break our app into three parts - products, users, and orders
+
+[ ] Submit them as docker containers to a k8s thing and have fun!
