@@ -65,6 +65,8 @@ class OrderForView(object):
 
 @app.route("/orders", methods=['GET'])
 def orders():
+    # Keep business logic here -- convert the database Order into a class
+    # better suited for displaying data
     current_orders = [OrderForView(order) for order in Order.query.all()]
     return render_template("orders.html", orders=current_orders)
 
