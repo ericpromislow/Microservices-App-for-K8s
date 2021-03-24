@@ -1,53 +1,60 @@
 {
     "products": [
         {
-            "id": "PRO-SOCKS-001",
+            "id": 1,
+            "code": "PRO-SOCKS-001",
             "name": "Cats",
             "description": "Comfy with Cats.",
             "picture": "https://www.bestofeverything.com/wp-content/uploads/2018/08/Cat-socks.jpg",
-            "cost": 10.99
+            "price": 10.99
         },
         {
-            "id": "PRO-SOCKS-002",
+            "id": 2,
+            "code": "PRO-SOCKS-002",
             "name": "Beetles",
             "description": "Comfy with Beetles.",
             "picture": "",
-            "cost": 12.49
+            "price": 12.49
         },
         {
-            "id": "PRO-SOCKS-003",
+            "id": 3,
+            "code": "PRO-SOCKS-003",
             "name": "Soccer",
             "description": "Comfy with Soccer balls.",
             "picture": "",
-            "cost": 12.45
+            "price": 12.45
         },
         {
-            "id": "PRO-SOCKS-004",
+            "id": 4,
+            "code": "PRO-SOCKS-004",
             "name": "Stripes",
             "description": "Comfy with Stripes.",
             "picture": "",
-            "cost": 16.45
+            "price": 16.45
         },
         {
-            "id": "PRO-SOCKS-005",
+            "id": 5,
+            "code": "PRO-SOCKS-005",
             "name": "Santa",
             "description": "Comfy with Santa",
             "picture": "",
-            "cost": 22.45
+            "price": 22.45
         },
         {
-            "id": "PRO-SOCKS-006",
+            "id": 6,
+            "code": "PRO-SOCKS-006",
             "name": "Snitches",
             "description": "Comfy with Snitches",
             "picture": "",
-            "cost": 15.50
+            "price": 15.50
         },
         {
-            "id": "PRO-SOCKS-007",
+            "id": 7,
+            "code": "PRO-SOCKS-007",
             "name": "Planets",
             "description": "Comfy with Planets.",
             "picture": "",
-            "cost": 12.30
+            "price": 12.30
         }
     ]
 }

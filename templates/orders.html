@@ -7,20 +7,24 @@
     <div>
       <table>
         <thead>
-          <td>Name</td>
+          <td>Item Name</td>
           <td>Quantity</td>
-          <td>User</td>
-          <td>City</td>
+          <td>Total Cost</td>
+          <td>Buyer</td>
+          <td>Date Ordered</td>
         </thead>
          {% for order in orders %}
           <tr>
-            <td>{{ order.item }}
+            <td>{{ order.product_name }}
             </td>
             <td>{{ order.quantity }}
             </td>
-            <td>{{ order.buyer_id }}
+            <td>{{ "%.2f" % (order.total_cost,) }}
             </td>
-            <td>{{ order.city }}
+            <td>{{ order.customer_name }}
+            </td>
+            <td>{{ order.date_ordered }}
+            </td>
           </tr>
         {% endfor %}
       </table>

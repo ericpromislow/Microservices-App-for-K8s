@@ -1,4 +1,5 @@
 [] 1. Declare other tables - not yet
+- Include rename 'user' to 'customer', reflecting their role
 
 [x] 2. Create the sqlite database - done by hand:
 
@@ -22,6 +23,8 @@ Prod: postgres (or mysql)
 [ ] 7. - Add a table for users - select the user in the new order form
 
 btw the model here is that only internal operators are accessing this
+
+[ ] 8. Build pages for users and products, and also redo orders so it uses user_id and product_id
 
 At this point we have a monolith working. Now we can work towards microservicing it:
 

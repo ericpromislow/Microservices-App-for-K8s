@@ -10,27 +10,21 @@ from flask_bootstrap import Bootstrap
 import json
 from json2html import json2html
 import html
+import re
 import sys
+import time
+import datetime
 
 import app_config
 import db_setup
 from forms.orders.add import OrderForm
-from models import Order
-#from models import db
-#from . import config
+from models import Order, Product, Customer
 
 app = Flask(__name__, template_folder='templates')
 bootstrap = Bootstrap(app)
 app.config['SECRET_KEY'] = app_config.SECRET_KEY
 
 db = db_setup.init_db(app)
-#db.init(app)
-#db.create_all()
-
-
-# read file
-with open('./data/products.json', 'r') as profile:
-    pro_data = profile.read()
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
@@ -40,36 +34,44 @@ def index():
 @app.route("/products", methods=['GET'])
 def products():
     """Products page for web app"""
-    #pro_table = (json2html.convert(json = pro_data))
-    products=json.loads(pro_data)['products']
-    sys.stderr.write("Hey products:\n")
-    sys.stderr.write(repr(products))
+    products = Product.query.all()
     return render_template("products.html", products=products)
-#    return render_template(
-#            "products.html", title="page", jsonfile=json.dumps(data))
 
 @app.route("/order_form", methods=['GET', 'POST'])
 def order_form():
     if request.method == "GET":
-        form = OrderForm() # ??? request.form)
+        form = OrderForm()
         form.quantity.data = 1
         return render_template("order_form.html", form=form)
     form = OrderForm(request.form)
     if form.validate_on_submit():
-        sys.stderr.write("Hey we're valid!!\n")
-        order = Order()
-        save_orders(order, form, new=True)
+        save_orders(form)
         flash('Order placed successfully')
         return redirect("/")
     else:
-        sys.stderr.write("Hey we're not valid!!\n")
         flash('Order not valid')
         return render_template("order_form.html", form=form)
 
+class OrderForView(object):
+    def __init__(self, order):
+        customer = Customer.query.filter_by(id=order.customer_id)[0]
+        product = Product.query.filter_by(id=order.product_id)[0]
+
+        self.product_name = product.name
+        self.quantity = order.quantity
+        self.total_cost = order.quantity * order.price
+        self.customer_name = "%s %s" % (customer.first_name, customer.last_name)
+        self.date_ordered = order.timestamp.ctime()
+
 @app.route("/orders", methods=['GET'])
 def orders():
-    current_orders = Order.query.all()
+    current_orders = [OrderForView(order) for order in Order.query.all()]
     return render_template("orders.html", orders=current_orders)
+
+@app.route("/customers", methods=['GET'])
+def customers():
+    customers = Customer.query.all()
+    return render_template("customers.html", customers=customers)
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -79,17 +81,22 @@ def page_not_found(e):
 def internal_server_error(e):
     return render_template('500.html'), 500
 
-def save_orders(order, form, new=True):
+def save_orders(form):
     """Save orders to database"""
-# how to write data to a db
+    order = Order()
 
-    item = Order()
-    item.name = form.item.data
+    item_name = form.item.data
+    product = Product.query.filter_by(name=item_name)[0]
 
-    order.item = form.item.data
+    names = re.split(" ", form.buyer.data, 1)
+    customer = Customer.query.filter_by(first_name=names[0], last_name=names[1])[0]
+
+    order.product_id = product.id
+    order.customer_id = customer.id
     order.quantity = form.quantity.data
-    order.buyer_id = form.buyer_id.data
-    order.city = form.city.data
+    order.price = product.price
+    order.timestamp = datetime.datetime.fromtimestamp(time.time())
+
     db.session.add(order)
     db.session.commit()
 

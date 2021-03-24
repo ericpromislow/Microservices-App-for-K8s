@@ -1,2 +1,16 @@
-1. Consider using scaled integers instead of floats for prices
+A. How to initialize the sqlited database
+
+1. python3 scripts/populate-user-table.py > data/products.json
+
+# Create the database
+2. python3 scripts/load-data-from-json.py
+
+3. ./info/run.sh  # Or cat this file and run commands separately
+
+B. To reset the database:
+
+1. rm myorders.db
+2. Rerun part (A.) above
+
+
 
