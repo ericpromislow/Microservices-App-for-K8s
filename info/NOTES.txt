@@ -12,5 +12,19 @@ B. To reset the database:
 1. rm myorders.db
 2. Rerun part (A.) above
 
+C. Running the database on postgres:
+
+On macos:
+
+1. brew install postgres
+pg_ctl -D /usr/local/var/postgres start
+
+POSTGRES URL = 127.0.0.1:5432
+
+psql postgres
+
+config stuff all at /usr/local/var/postgres
+$ initdb /usr/local/var/postgres # -- not needed this time
+
 
 
