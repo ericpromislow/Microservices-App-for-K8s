@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monolith-app
+  labels:
+    app: monolith-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: monolith-app
+  template:
+    metadata:
+      labels:
+        app: monolith-app
+    spec:
+      containers:
+      - name: monolith-app
+        image: docker.io/aqsamm/onlinestore-k8s:v1.0.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000

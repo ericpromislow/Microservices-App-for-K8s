@@ -1,0 +1,6 @@
+json2html
+flask
+flask_sqlalchemy
+flask-bootstrap
+flask-wtf
+Faker
