@@ -6,3 +6,4 @@ flask-migrate
 flask-wtf
 Faker
 psycopg2-binary
+click

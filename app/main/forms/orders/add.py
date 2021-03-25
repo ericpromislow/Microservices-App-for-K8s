@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import SelectField, StringField, SubmitField
-from models import Product, Customer
+from app.models import Product, Customer
 
 class OrderForm(FlaskForm):
     item = SelectField('Item')

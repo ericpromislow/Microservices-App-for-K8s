@@ -1,11 +1,9 @@
-import flask_sqlalchemy
-
-db = flask_sqlalchemy.SQLAlchemy()
+from . import db
 
 class Customer(db.Model):
     __tablename__ = "customers"
     
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(100))
     last_name = db.Column(db.String(100))
     address = db.Column(db.String(100))
@@ -20,7 +18,7 @@ class Customer(db.Model):
 class Product(db.Model):
     __tablename__ = "products"
     
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(32))
     name = db.Column(db.String(100))
     description = db.Column(db.String(100))
@@ -34,7 +32,7 @@ class Product(db.Model):
 class Order(db.Model):
     __tablename__ = "orders"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True)
     customer_id = db.Column(db.Integer, primary_key=True)
     product_id = db.Column(db.Integer, primary_key=True)
     quantity = db.Column(db.Integer)

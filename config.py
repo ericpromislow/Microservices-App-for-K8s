@@ -24,8 +24,7 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or \
-        'sqlite://'
+    SQLALCHEMY_DATABASE_URI = os.environ.get("SOCKSESS_DB", 'sqlite+pysqlite:///' + os.path.join(basedir, 'testing.db'))
     WTF_CSRF_ENABLED = False
 
 class ProductionConfig(Config):
@@ -35,4 +34,4 @@ config = {
     'development': DevelopmentConfig,
     'testing': TestingConfig,
     'production': ProductionConfig,
-}[os.environ.get("FLASK_MODE", "development")]
+}
