@@ -28,3 +28,121 @@ $ initdb /usr/local/var/postgres # -- not needed this time
 
 
 
+
+# Running on k8s
+
+1. Use rancher-destop to create the minikube thing
+
+$ minikube status -p rancher-desktop
+WARNING: Your kubectl is pointing to stale minikube-vm.
+To fix the kubectl context, run `minikube update-context`
+
+$ minikube update-context  -p rancher-desktop
+ "rancher-desktop" context has been updated to point to 192.168.64.28:8443
+💗  Current context is "rancher-desktop"
+
+Now build a Docker file
+
+$ docker build -t morspin/socksess .
+
+- Seems like I need to have the docker app running to be able to build
+  a container
+
+$ docker tag socksess:latest morspin/socksess:v0.1
+
+$ docker run -p 5000:5000 morspin/socksess:v0.1
+
+$ docker push morspin/socksess:v0.3
+
+=============================================================================
+
+**************** Workflow! ****************
+
+1. Edit something
+Ensure app.yaml image refers to docker.io/morspin/socksess:v0.4.x
+2. docker build -t morspin/socksess .
+3. docker tag morspin/socksess:latest morspin/socksess:v0.4.x
+4. docker push morspin/socksess:v0.4.x
+5. k apply -f k8s/app.yaml -n socksess
+6. watch k get pods,services -n socksess
+7. copy the socksess pod name
+8. When the socksess pod is running:
+Ctrl-C
+9. k logs --all-containers -f -n socksess pod/PODNAME
+10. Hit the web site
+11. k delete -f k8s/app.yaml -n socksess
+12. Increment x and repeat
+
+=============================================================================
+
+# k8s time
+
+k create namespace socksess
+
+k apply -f k8s/app-deployment.yaml -n socksess
+
+k get deploy -n socksess
+
+ALT 1: k port-forward deployment/socksessm -n socksess 5000:5000
+
+ALT 2: k apply -f k8s/app-service.yaml -n socksess
+
+.... weird -- after stopping the `k port-forward` command, localhost:5000 still works
+
+/////////////////////////////////////////////////////////////////////////////
+postgres time
+
+https://medium.com/@mudasiryounas/kubernetes-docker-flask-postgres-sqlalchemy-gunicorn-deploy-your-flask-application-on-57431c8cbd9f
+
+-- not going to go with gunicorn because .... the python server is fast enough for our purposes
+
+tag: v0.4.1 - SOCKSESS_DB = postgres url
+
+0.4.4 - Run load-data conditionally
+0.4.5 - Put the psycopg2 dialect back in the URL. Without it got this error message:
+sqlalchemy.exc.NoSuchModuleError: Can't load plugin: sqlalchemy.dialects:postgres
+
+0.4.6 - Check that DB URL
+0.4.7 - DB URL not showing up -- add more print stmts
+0.4.8 - DB URL not showing up -- add more print stmts, including for load-data-from-json.py
+
+url is correct: postgres+psycopg2://socksess:socksess@postgres:5432/socksess
+
+0.4.9 - set URL to postgresql+...
+
+0.4.10 - connect after creating the tables...
+
+0.4.11 -- why do we have products but not customers ?
+0.4.12 -- just run one postgres
+
+
+/////////////////////////////////////////////////////////////////////////////
+
+Thursday - day 4 -- some refactoring (chapters refer to ORA Flask Web Development):
+
+1. Add migrations (chapter 5)
+
+$ pip3 install flask-migrate
+$ add to code
+$ Unset SOCKSESS_DB=postgresql://socksess:socksess@localhost:5432/socksess
+$ flask db migrate
+
+... not working out right away -- here's what I did:
+
+$ run `python3 scripts/load-data-from-json.py` to create the database
+$ run `flask db migrate -m "create the tables"`
+$ edit migrations/versions/X_create_the_db_tables.py -- switch `downgrade` and `upgrade` so they make sense, and move the bulk assignment from scripts/load-data-from-json.py to this migration script
+$ fix the CMD in Dockerfile to run `scripts/run.sh`
+$ add the command to run the migration-upgrade to `scripts/run.sh`
+  -- when k8s tries to start up the container, if the database isn't ready, the CMD will fail, and k8s will retry after a pause, either by creating a new container or retrying the command.  This worked.
+
+... k8s builds
+0.5.1 - first try with migrations, sqlite
+0.5.2 - first try with migrations, postgresql
+0.5.3 - ^, specify production mode to get postgres, not sqlite
+0.5.4 - type "datetime" does not exist - try sd.TIMESTAMP
+
+
+2. Add blueprints (chapter 7) 
+
+3. Add API endpoints (chapter 14)

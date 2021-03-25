@@ -6,6 +6,7 @@ from flask import Flask, render_template
 from flask import request, url_for, flash, redirect
 
 from flask_bootstrap import Bootstrap
+from flask_migrate import Migrate
 
 import json
 from json2html import json2html
@@ -15,16 +16,18 @@ import sys
 import time
 import datetime
 
-import app_config
+import config
 import db_setup
 from forms.orders.add import OrderForm
 from models import Order, Product, Customer
 
 app = Flask(__name__, template_folder='templates')
 bootstrap = Bootstrap(app)
-app.config['SECRET_KEY'] = app_config.SECRET_KEY
+app.config['SECRET_KEY'] = config.config.SECRET_KEY
 
 db = db_setup.init_db(app)
+migrate = Migrate(app, db)
+migrate.init_app(app, db)
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
