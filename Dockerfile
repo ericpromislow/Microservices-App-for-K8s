@@ -9,6 +9,7 @@ ENV APP_HOME=/app/
 ENV SOCKSESS_DB=postgresql+psycopg2://socksess:socksess@postgres:5432/socksess
 ENV FLASK_APP=$APP_HOME/frontend.py
 ENV FLASK_DEBUG=1
+ENV FLASK_MODE=production
 
 WORKDIR $APP_HOME
 
@@ -28,4 +29,4 @@ RUN pip3 install -r requirements.txt
 
 EXPOSE 5000
 
-CMD ["flask", "run", "--host=0.0.0.0"]
+CMD ["/bin/bash", "scripts/run.sh"]

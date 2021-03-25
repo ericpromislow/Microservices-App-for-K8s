@@ -2,6 +2,7 @@ json2html
 flask
 flask_sqlalchemy
 flask-bootstrap
+flask-migrate
 flask-wtf
 Faker
 psycopg2-binary

@@ -7,16 +7,13 @@ import sys
 
 from flask_sqlalchemy import SQLAlchemy
 
-import app_config
+import config
 from models import Customer
 
 def init_db(app):
-    print("QQQ: init_db: url: %s" % app_config.DB_URL, file=sys.stdout)
-    app.config['SQLALCHEMY_DATABASE_URI'] = app_config.DB_URL
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    db_url = config.config.SQLALCHEMY_DATABASE_URI
+    #print("QQQ: init_db: url: %s" % db_url, file=sys.stdout)
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_url
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = config.config.SQLALCHEMY_TRACK_MODIFICATIONS
     db = SQLAlchemy(app)
-    try:
-        print("QQQ: %d - %d" % (Customer.query.count(), Product.query.count()))
-    except:
-        os.system("python3 scripts/load-data-from-json.py")
     return db

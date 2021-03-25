@@ -114,3 +114,35 @@ url is correct: postgres+psycopg2://socksess:socksess@postgres:5432/socksess
 
 0.4.11 -- why do we have products but not customers ?
 0.4.12 -- just run one postgres
+
+
+/////////////////////////////////////////////////////////////////////////////
+
+Thursday - day 4 -- some refactoring (chapters refer to ORA Flask Web Development):
+
+1. Add migrations (chapter 5)
+
+$ pip3 install flask-migrate
+$ add to code
+$ Unset SOCKSESS_DB=postgresql://socksess:socksess@localhost:5432/socksess
+$ flask db migrate
+
+... not working out right away -- here's what I did:
+
+$ run `python3 scripts/load-data-from-json.py` to create the database
+$ run `flask db migrate -m "create the tables"`
+$ edit migrations/versions/X_create_the_db_tables.py -- switch `downgrade` and `upgrade` so they make sense, and move the bulk assignment from scripts/load-data-from-json.py to this migration script
+$ fix the CMD in Dockerfile to run `scripts/run.sh`
+$ add the command to run the migration-upgrade to `scripts/run.sh`
+  -- when k8s tries to start up the container, if the database isn't ready, the CMD will fail, and k8s will retry after a pause, either by creating a new container or retrying the command.  This worked.
+
+... k8s builds
+0.5.1 - first try with migrations, sqlite
+0.5.2 - first try with migrations, postgresql
+0.5.3 - ^, specify production mode to get postgres, not sqlite
+0.5.4 - type "datetime" does not exist - try sd.TIMESTAMP
+
+
+2. Add blueprints (chapter 7) 
+
+3. Add API endpoints (chapter 14)
