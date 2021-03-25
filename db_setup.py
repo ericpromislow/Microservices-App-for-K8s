@@ -11,13 +11,12 @@ import app_config
 from models import Customer
 
 def init_db(app):
-    print("QQQ: init_db: url: %s" % app_config.DB_URL, file=sys.stderr)
     print("QQQ: init_db: url: %s" % app_config.DB_URL, file=sys.stdout)
     app.config['SQLALCHEMY_DATABASE_URI'] = app_config.DB_URL
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db = SQLAlchemy(app)
     try:
-        print(Customer.query.count())
+        print("QQQ: %d - %d" % (Customer.query.count(), Product.query.count()))
     except:
         os.system("python3 scripts/load-data-from-json.py")
     return db

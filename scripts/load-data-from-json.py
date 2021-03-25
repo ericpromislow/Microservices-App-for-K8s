@@ -22,7 +22,8 @@ def create_connection():
     print("QQQ: load-data-from-json.py: url: %s" % app_config.DB_URL, file=sys.stdout)
     url = app_config.DB_URL
     engine = create_engine(url)
-    return engine
+    conn = engine.connect()
+    return conn, engine
 
 def create_tables(engine):
     metadata = MetaData()
@@ -62,8 +63,7 @@ def create_tables(engine):
         Column('timestamp', DateTime)
         )
     metadata.create_all(engine)
-    conn = engine.connect()
-    return (conn, customer_table, product_table, order_table)
+    return (customer_table, product_table, order_table)
 
 def do_products(conn, product_table):
     with open("data/products.json") as fd:
@@ -76,8 +76,8 @@ def do_customers(conn, customer_table):
     conn.execute(insert(customer_table), customers)
 
 def main():
-    engine = create_connection()
-    conn, customer_table, product_table, order_table = create_tables(engine)
+    conn, engine = create_connection()
+    customer_table, product_table, order_table = create_tables(engine)
     do_products(conn, product_table)
     do_customers(conn, customer_table)
     #conn.commit() # Not an attribute -- ?
