@@ -4,3 +4,4 @@ flask_sqlalchemy
 flask-bootstrap
 flask-wtf
 Faker
+psycopg2-binary

@@ -13,16 +13,16 @@ from sqlalchemy import create_engine, insert, MetaData, text
 from sqlalchemy import Table, Column, ForeignKey
 from sqlalchemy import DateTime, Float, Integer, String
 
-import sqlite3
+#import sqlite3
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 import app_config
 
 def create_connection():
+    print("QQQ: load-data-from-json.py: url: %s" % app_config.DB_URL, file=sys.stdout)
     url = app_config.DB_URL
     engine = create_engine(url)
-    conn = engine.connect()
-    return (engine, conn)
+    return engine
 
 def create_tables(engine):
     metadata = MetaData()
@@ -62,7 +62,8 @@ def create_tables(engine):
         Column('timestamp', DateTime)
         )
     metadata.create_all(engine)
-    return (customer_table, product_table, order_table)
+    conn = engine.connect()
+    return (conn, customer_table, product_table, order_table)
 
 def do_products(conn, product_table):
     with open("data/products.json") as fd:
@@ -75,8 +76,8 @@ def do_customers(conn, customer_table):
     conn.execute(insert(customer_table), customers)
 
 def main():
-    engine, conn = create_connection()
-    customer_table, product_table, order_table = create_tables(engine)
+    engine = create_connection()
+    conn, customer_table, product_table, order_table = create_tables(engine)
     do_products(conn, product_table)
     do_customers(conn, customer_table)
     #conn.commit() # Not an attribute -- ?

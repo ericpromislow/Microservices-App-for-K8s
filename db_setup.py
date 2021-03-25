@@ -1,3 +1,5 @@
+import os
+import sys
 
 # from sqlalchemy import create_engine
 # from sqlalchemy.orm import scoped_session, sessionmaker
@@ -6,19 +8,16 @@
 from flask_sqlalchemy import SQLAlchemy
 
 import app_config
-
-# import models
-
-# engine = create_engine(app_config.DB_URL, convert_unicode=True)
-
-# db_session = scoped_session(sessionmaker(autocommit=False,
-#                                         autoflush=False,
-#                                         bind=engine))
-# Base = declarative_base()
-#Base.query = db_session.query_property()
+from models import Customer
 
 def init_db(app):
+    print("QQQ: init_db: url: %s" % app_config.DB_URL, file=sys.stderr)
+    print("QQQ: init_db: url: %s" % app_config.DB_URL, file=sys.stdout)
     app.config['SQLALCHEMY_DATABASE_URI'] = app_config.DB_URL
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db = SQLAlchemy(app)
+    try:
+        print(Customer.query.count())
+    except:
+        os.system("python3 scripts/load-data-from-json.py")
     return db

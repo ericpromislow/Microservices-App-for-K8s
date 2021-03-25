@@ -20,6 +20,8 @@ import db_setup
 from forms.orders.add import OrderForm
 from models import Order, Product, Customer
 
+print("QQQ: Hey we're doing an app!")
+
 app = Flask(__name__, template_folder='templates')
 bootstrap = Bootstrap(app)
 app.config['SECRET_KEY'] = app_config.SECRET_KEY
