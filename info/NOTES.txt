@@ -145,6 +145,22 @@ $ add the command to run the migration-upgrade to `scripts/run.sh`
 
 2. Add blueprints (chapter 7) 
 
-0.5.5 - first try with blueprints
+0.5.5 - verify postgres works on k8s
+... couldn't get the socksess and postgres pods to show -- only a rancher internal service. So I rebuilt minikube.
+
+k create namespace socksess
 
 3. Add API endpoints (chapter 14)
+
+
+To delete images from docker.io:
+
+HUB_USERNAME=<docker username>
+HUB_PASSWORD=<docker password>
+HUB_TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d '{"username": "'${HUB_USERNAME}'", "password": "'${HUB_PASSWORD}'"}' https://hub.docker.com/v2/users/login/ | jq -r .token)
+curl -i -X DELETE \
+  -H "Accept: application/json" \
+  -H "Authorization: JWT $HUB_TOKEN" \
+  https://hub.docker.com/v2/repositories/$HUB_USERNAME/<REPO>/tags/<TAG>/
+
+In a loop, sleep a second or so after each delete to avoid running into rate-limiting problems.
