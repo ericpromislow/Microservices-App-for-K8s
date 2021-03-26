@@ -12,7 +12,6 @@ from ..models import Order, Product, Customer
 
 import re
 import time
-import datetime
 
 @main.route("/", methods=['GET'])
 def index():

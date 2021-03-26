@@ -10,6 +10,8 @@ import json
 from alembic import op
 import sqlalchemy as sa
 
+from flask_sqlalchemy import SQLAlchemy
+db = SQLAlchemy()
 
 # revision identifiers, used by Alembic.
 revision = 'a584a869cb40'
@@ -64,4 +66,6 @@ def upgrade():
     sa.ForeignKeyConstraint(['product_id'], ['products.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+
+    db.create_all()
     # ### end Alembic commands ###
