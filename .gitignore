@@ -31,3 +31,4 @@ __pycache__/
 # Specific to this app
 
 myorders.db
+testing.db

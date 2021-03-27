@@ -1,3 +1,4 @@
+import json
 import time
 from datetime import datetime
 
@@ -22,6 +23,7 @@ class Customer(db.Model):
 
     def to_json(self):
         jcust = {
+            'id': self.id,
             'url': url_for('api.get_customer', id=self.id),
             'first_name': self.first_name,
             'last_name': self.last_name,
@@ -72,6 +74,7 @@ class Product(db.Model):
 
     def to_json(self):
         jprod = {
+            'id': self.id,
             'url': url_for('api.get_product', id=self.id),
             'code': self.code,
             'name': self.name,
@@ -90,16 +93,15 @@ class Product(db.Model):
             'price': True,
             'picture': False,
             }
+        dict = {}
         packet = json.loads(payload)
         for k, v in checker.items():
-            if v and not (k in packet):
+            if k in packet:
+                dict[k] = packet[k]
+            elif v:
                 raise ValidationError("product does not have a %s field" % (k,))
 
-        return Product(code=packet['code'],
-                       name=packet['name'],
-                       description=packet['description'],
-                       price=packet['price'],
-                       picture=packet['picture'])
+        return Product(**dict)
 
     def __repr__(self):
         return "<Product id:%d name:%s cost:%2.2f>" % (self.id, self.name, self.price)
@@ -112,17 +114,20 @@ class Order(db.Model):
     #    extra['autocomplete'] = True
     #id = db.Column(db.Integer, primary_key=True, **extra)
     id = db.Column(db.Integer, primary_key=True)
-    customer_id = db.Column(db.Integer, primary_key=True)
-    product_id = db.Column(db.Integer, primary_key=True)
+    customer_id = db.Column(db.Integer)
+    product_id = db.Column(db.Integer)
     quantity = db.Column(db.Integer)
     price = db.Column(db.Float)
     timestamp = db.Column(db.DateTime)
 
     def to_json(self):
         jorder = {
+            'id': self.id,
             'url': url_for('api.get_order', id=self.id),
-            'customer': url_for('api.get_customer', id=self.customer_id),
-            'product': url_for('api.get_product', id=self.product_id),
+            'customer_id': self.customer_id,
+            'customer_url': url_for('api.get_customer', id=self.customer_id),
+            'product_url': url_for('api.get_product', id=self.product_id),
+            'product_id': self.product_id,
             'quantity': self.quantity,
             'price': self.price,
             'timestamp': self.timestamp,
@@ -140,7 +145,7 @@ class Order(db.Model):
         packet = json.loads(jcust)
         for k, v in checker.items():
             if v and not (k in packet):
-                raise ValidationError("customer does not have a %s field" % (k,))
+                raise ValidationError("order does not have a %s field" % (k,))
         quantity = packet['quantity'] or 1
 
         return Order(
