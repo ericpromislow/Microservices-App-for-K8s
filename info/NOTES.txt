@@ -63,6 +63,7 @@ Ensure app.yaml image refers to docker.io/morspin/socksess:v0.4.x
 2. docker build -t morspin/socksess .
 3. docker tag morspin/socksess:latest morspin/socksess:v0.4.x
 4. docker push morspin/socksess: v0.4.x
+4.5. k create namespace socksess
 5. k apply -f k8s/app.yaml -n socksess
 6. watch k get pods,services -n socksess
 7. copy the socksess pod name
