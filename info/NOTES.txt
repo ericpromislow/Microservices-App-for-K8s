@@ -59,10 +59,11 @@ $ docker push morspin/socksess:v0.3
 **************** Workflow! ****************
 
 1. Edit something
-Ensure app.yaml image refers to docker.io/morspin/socksess:v0.4.x
+1.1 IMG=v0.5.7
+Ensure app.yaml image refers to docker.io/morspin/socksess:$IMG
 2. docker build -t morspin/socksess .
-3. docker tag morspin/socksess:latest morspin/socksess:v0.4.x
-4. docker push morspin/socksess: v0.4.x
+3. docker tag morspin/socksess:latest morspin/socksess:$IMG
+4. docker push morspin/socksess:$IMG
 4.5. k create namespace socksess
 5. k apply -f k8s/app.yaml -n socksess
 6. watch k get pods,services -n socksess
@@ -70,7 +71,7 @@ Ensure app.yaml image refers to docker.io/morspin/socksess:v0.4.x
 8. When the socksess pod is running:
 Ctrl-C
 9. k logs --all-containers -f -n socksess pod/PODNAME
-10. Hit the web site
+10. Hit the web site  -- browse to http://<service/socksessm LB ExternalIP>:5000
 11. k delete -f k8s/app.yaml -n socksess
 12. Increment x and repeat
 
@@ -115,6 +116,9 @@ url is correct: postgres+psycopg2://socksess:socksess@postgres:5432/socksess
 
 0.4.11 -- why do we have products but not customers ?
 0.4.12 -- just run one postgres
+
+0.5.6 -- add `set -ex` to run.sh so it fails on `flask db upgrade` if
+postgres isn't ready
 
 
 /////////////////////////////////////////////////////////////////////////////
